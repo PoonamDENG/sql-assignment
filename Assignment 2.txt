@@ -1,0 +1,56 @@
+--connect to SQL on gcloud sql connect poonam --user-root
+
+create database hr;
+use hr;
+create table department(dept_id   integer, dept_namenvarchar (100), primary key(dept_id));
+insert into department values(10,"Customer Service");
+insert into department values(20,"Sales"); 
+insert into department values(30,"Marketing");
+insert into department values(40,"Operations");
+insert into department values(50,"R&D");
+insert into department values(60,"HR");
+ 
+-- new employee table
+ 
+create table employee(emp_id int, emp_fname varchar(50), emp_lname varchar(50), emp_email varchar(50), emp_address varchar(250), emp_phone(250),primary key(emp_id),foreign key(dept_id references department(dept_id),foreign key(emp_address references address(emp_address), foreign key(emp_email references email(emp_email), foreign key(emp_phone references phone(emp_phone);
+insert into employee values(1, "John", "Smith", "Calgary", "abc@gmail.com","1234567890", 10, 9000.00);
+insert into employee values(2, "Charlie", "Don", "Calgary", "def@gmail.com","1112131415", 10, 10000.00);
+insert into employee values(3, "Edward", "Jones", "Montreal", "ghi@gmail.com","1214161718", 10, 15000.00);
+insert into employee values(4, "Shirley", "Mazor", "Edmonton", "jkl@gmail.com","1315161890", 10, 20000.00);
+insert into employee values(5, "Paresh", "Yadav", "Brampton", "mno@gmail.com","1284563790", 10, 35000.00);
+insert into employee values(6, "Poonam", "Sharma", "Edmonton", "pqr@gmail.com","1278934567", 10, 10000.00);
+insert into employee values(7, "Raunak", "Raj", "Brampton", "stu@gmail.com","1256789034", 10, 9000.00);
+
+-- new address table
+
+create table emp_address(emp_id, address varchar(250), primary key(emp_address);
+insert into emp_address values(1,"Calgary");
+insert into emp_address values(4,"Edmonton");
+insert into emp_address values(2,"Calgary");
+insert into emp_address values(5,"Brampton");
+
+-- new email table
+create table emp_email(emp_id,varchar(50, primary key(emp_email);
+insert into emp_email(2, "def@gmail.com");
+insert into emp_email(4, "jkl@gmail.com");
+insert into emp_email(5, "mno@gmail.com");
+insert into emp_email(6, "pqr@gmail.com");
+
+--new phone table
+create table emp_phone(emp_id,integer(10),primary key(emp_phone);
+insert into emp_phone(2,"1112131415");
+insert into emp_phone(4,"1315161890");
+insert into emp_phone(6,"1278934567");
+insert into emp_phone(7,"1256789034");
+
+select employee emp_id, emp_fname,emp_lname,dept_id from employee join department on dept_id;
+select address emp_id, emp_address from address join employee on emp_id;
+select email emp_id, emp_email from email join employee on emp_id;
+select phone emp_id, emp_phone from table join employee on emp_id;
+
+show tables;
+desc employee;
+desc department;
+desc address;
+desc email;
+desc phone;
