@@ -1,52 +1,59 @@
 --connect to SQL on gcloud sql connect poonam --user-root
 
-create database hr;
-use hr;
-create table department(dept_id   integer, dept_namenvarchar (100), primary key(dept_id));
-insert into department values(10,"Customer Service");
-insert into department values(20,"Sales"); 
-insert into department values(30,"Marketing");
-insert into department values(40,"Operations");
-insert into department values(50,"R&D");
-insert into department values(60,"HR");
- 
--- new employee table
- 
-create table employee(emp_id int, emp_fname varchar(50), emp_lname varchar(50), emp_email varchar(50), emp_address varchar(250), emp_phone(250),primary key(emp_id),foreign key(dept_id references department(dept_id),foreign key(emp_address references address(emp_address), foreign key(emp_email references email(emp_email), foreign key(emp_phone references phone(emp_phone);
-insert into employee values(1, "John", "Smith", "Calgary", "abc@gmail.com","1234567890", 10, 9000.00);
-insert into employee values(2, "Charlie", "Don", "Calgary", "def@gmail.com","1112131415", 10, 10000.00);
-insert into employee values(3, "Edward", "Jones", "Montreal", "ghi@gmail.com","1214161718", 10, 15000.00);
-insert into employee values(4, "Shirley", "Mazor", "Edmonton", "jkl@gmail.com","1315161890", 10, 20000.00);
-insert into employee values(5, "Paresh", "Yadav", "Brampton", "mno@gmail.com","1284563790", 10, 35000.00);
-insert into employee values(6, "Poonam", "Sharma", "Edmonton", "pqr@gmail.com","1278934567", 10, 10000.00);
-insert into employee values(7, "Raunak", "Raj", "Brampton", "stu@gmail.com","1256789034", 10, 9000.00);
+-- Create the HR database
+CREATE DATABASE hr;
 
--- new address table
+-- Create the department table
+CREATE TABLE department (
+    department_id INT NOT NULL,
+    department_name VARCHAR(100) NOT NULL),
+	Constraint department_pk Primary key(dept_id)
+	);
+INSERT INTO department (department_id, department_name) VALUES (1, 'Sales'), (2, 'Marketing'), (3, 'HR'), (4, 'R&D') ;
 
-create table emp_address(emp_id, address varchar(250), primary key(emp_address);
-insert into emp_address values(1,"Calgary");
-insert into emp_address values(4,"Edmonton");
-insert into emp_address values(2,"Calgary");
-insert into emp_address values(5,"Brampton");
+-- Create the employee table
+CREATE TABLE employee (
+    employee_id INT NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+	Salary int NOT NULL,
+    department_id INT, Constraint employee_pk Primary key (emp_id)
+    FOREIGN KEY (department_id) REFERENCES department(department_id)
+	);
+INSERT INTO employee (employee_id, first_name, last_name, department_id) VALUES (101, 'John', 'Smith', 42000 1), (102, 'Edward', 'Doe', 63000, 2), (103, 'Anderson', 'Joey', 55000,  3), (104, 'Everest', 'Milli',48000, 4) ;
 
--- new email table
-create table emp_email(emp_id,varchar(50, primary key(emp_email);
-insert into emp_email(2, "def@gmail.com");
-insert into emp_email(4, "jkl@gmail.com");
-insert into emp_email(5, "mno@gmail.com");
-insert into emp_email(6, "pqr@gmail.com");
+-- Create the email table
+CREATE TABLE email (
+    email_id INT PRIMARY KEY,
+    email_address VARCHAR(25) NOT NULL,
+    employee_id INT, constraint Email PRIMARY KEY (email_id),
+    FOREIGN KEY (employee_id) REFERENCES employee(employee_id));
+INSERT INTO email (email_id, email_address, employee_id) VALUES (1, 'john.s@exp.com', 101), (2, 'edward.d@exp.com', 102), (3, 'anderson.j@exp.com', 103), (4, 'everest.m@exp.com', 104) ;
 
---new phone table
-create table emp_phone(emp_id,integer(10),primary key(emp_phone);
-insert into emp_phone(2,"1112131415");
-insert into emp_phone(4,"1315161890");
-insert into emp_phone(6,"1278934567");
-insert into emp_phone(7,"1256789034");
+-- Create the address table
+CREATE TABLE address (
+    address_id INT,
+    street VARCHAR(25) NOT NULL,
+    city VARCHAR(25) NOT NULL,
+    state VARCHAR(25) NOT NULL,
+    zip_code VARCHAR(25) NOT NULL,
+    employee_id INT, Constraint address_pk Primary key (address_id)
+    FOREIGN KEY (employee_id) REFERENCES employee(employee_id));
+INSERT INTO address (address_id, street, city, state, zip_code, employee_id) VALUES (1, '123 Main St', 'Brampton', 'ON', '12345', 101), (2, '456 Maple Ave', 'Edmonton', 'AB', '67890', 102),(3, '134 Millwood Road', 'Edmonton', 'AB', '63680', 103),
+ (4, '238 Sarcee Ave', 'Brampton', 'ON', '72345', 104);
 
-select employee emp_id, emp_fname,emp_lname,dept_id from employee join department on dept_id;
-select address emp_id, emp_address from address join employee on emp_id;
-select email emp_id, emp_email from email join employee on emp_id;
-select phone emp_id, emp_phone from table join employee on emp_id;
+-- Create the phone table
+CREATE TABLE phone (
+    phone_id INT PRIMARY KEY,
+    phone_number VARCHAR(12) NOT NULL,
+    employee_id INT, Constraint phone_pk Primary key (phone_id), 
+    FOREIGN KEY (employee_id) REFERENCES employee(employee_id));
+INSERT INTO phone (phone_id, phone_number, employee_id) VALUES (1, '555-123-4567', 101), (2, '587-987-6543', 102), (3, '587-606-6255', 103), (4, '647-780-2213', 104);
+
+select employee (emp_id, emp_first_name,emp_last_name,dept_name from employee join department on employee.dept_id = department.dept_id;
+select address (address_id,street,city, state, zip_code, employee_id) from address join employee on employee.emp_id = address.employee_id;
+select email (email_id, email_address, employee_id) from email join employee on employee.emp_id = email.employee_id;
+select phone (phone_id, phone_number, employee_id from phone join employee on employee.emp_id = phone.employee_id;
 
 show tables;
 desc employee;
